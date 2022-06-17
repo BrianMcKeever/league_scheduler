@@ -1,0 +1,4 @@
+*.swp
+local_settings.py
+__pycache__
+*.sqlite3
