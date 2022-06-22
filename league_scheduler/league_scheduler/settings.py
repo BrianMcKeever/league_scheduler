@@ -55,7 +55,7 @@ ROOT_URLCONF = 'league_scheduler.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['./league_scheduler/templates/league_scheduler/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
