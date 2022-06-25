@@ -118,4 +118,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL='users.User'
+AUTH_USER_MODEL='users.MyUser'
+
+from .local_settings import DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET
+
