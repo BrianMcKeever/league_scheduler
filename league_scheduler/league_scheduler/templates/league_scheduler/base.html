@@ -1,37 +1,50 @@
 {% load i18n static %}
 <!doctype html>
 <html lang="en">
-	
+
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		
+
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>{% if site_name %}{{ site_name }} : {% endif %}{% block head_title %}{% endblock %}</title>
 		<meta name="description" content="Legacy X-Wing League">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-	{% block extra_head %}
-        {% endblock %}
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+		{% block extra_head %}
+		{% endblock %}
 	</head>
 
-        <div id="body">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-            {% if messages %}
-                <ul id="messages">
-                    {% for message in messages %}
-                    <li id="message_{{ forloop.counter }}"><a href="#" onclick="$('#message_{{ forloop.counter }}').fadeOut(); return false;"><small>{% trans "clear" %}</small></a> {{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
+	<div id="header">
+		{% if user.is_authenticated %}
+		Hello, {{ user.discord_name }}.
+		<a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+		{% else %}
+		<div class="btn-group">
+			<a href="{% url 'login' %}" class="btn btn-primary">Register</a>
+			<a href="{% url 'login' %}" class="btn btn-primary">Sign In</a>
+		</div>
+		{% endif %}
+	</div>
+	<div id="body">
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+		{% if messages %}
+			{% for message in messages %}
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+					{{ message }}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
 
-            {% block body %}
-            {% endblock %}
+			{% endfor %}
+		{% endif %}
 
-        </div>
+		{% block body %}
+		{% endblock %}
 
-        <div id="footer">This website is run by X-Wing Miniatures Game 2.0 players. It's
-        	not associated with Disney, Atomic Mass Games, Fantasy Flight
-        	Games, Lucasfilm, or any other company.</div>
+	</div>
 
-    </body>
+	<div id="footer">This website is run by X-Wing Miniatures Game 2.0 players. It's
+		not associated with Disney, Atomic Mass Games, Fantasy Flight
+		Games, Lucasfilm, or any other company.</div>
+
+	</body>
 </html>
 

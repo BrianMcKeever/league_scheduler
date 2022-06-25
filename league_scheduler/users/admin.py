@@ -16,7 +16,6 @@ class UserCreationForm(forms.ModelForm):
         fields = ('discord_id', 'discord_name', 'discord_discriminator')
 
     def save(self, commit=True):
-        # Save the provided password in hashed format
         user = super().save(commit=False)
         if commit:
             user.save()

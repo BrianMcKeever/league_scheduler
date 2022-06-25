@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout
 from users.models import MyUser
+from django.contrib import messages
 
 oauth = OAuth()
 oauth.register(
@@ -24,11 +25,11 @@ oauth.register(
 def login(request):
     discord = oauth.create_client('discord')
     redirect_uri = request.build_absolute_uri('/users/authorize')
-    #redirect_uri = "http://localhost:8000/users/authorize"
     return discord.authorize_redirect(request, redirect_uri)
 
 def logout_view(request):
     logout(request)
+    messages.add_message(request, messages.SUCCESS, 'Logout Successful.')
     return redirect('portal')
 
 def authorize(request):
