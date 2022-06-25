@@ -1,8 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.conf import settings
 from django.dispatch import receiver
 from authlib.integrations.django_client import OAuth, token_update
 from django.http import HttpResponse
+from django.contrib.auth import login as auth_login
+from django.contrib.auth import logout
+from users.models import MyUser
+
 oauth = OAuth()
 oauth.register(
     name='discord',
@@ -14,7 +18,6 @@ oauth.register(
     authorize_params=None,
     api_base_url='https://discord.com/api/v6/',
     client_kwargs={'scope':'identify'},
-    #client_kwargs={'scope': 'user:email'},
 )
 
 
@@ -23,6 +26,10 @@ def login(request):
     redirect_uri = request.build_absolute_uri('/users/authorize')
     #redirect_uri = "http://localhost:8000/users/authorize"
     return discord.authorize_redirect(request, redirect_uri)
+
+def logout_view(request):
+    logout(request)
+    return redirect('portal')
 
 def authorize(request):
     token = oauth.discord.authorize_access_token(request)
@@ -33,7 +40,15 @@ def authorize(request):
     profile = response.json()
     #profile is:
     #{'id': '194512118853271552', 'username': 'Fudly', 'avatar': '0d0d67f276cba0e61fd02572d6cf2126', 'avatar_decoration': None, 'discriminator': '7712', 'public_flags': 0, 'flags': 0, 'banner': None, 'banner_color': None, 'accent_color': None, 'locale': 'en-US', 'mfa_enabled': False}
-    return HttpResponse("<p>%s</p><p> %s</p>"%(token, profile))
+    user, created = MyUser.objects.get_or_create(
+            discord_id =                 profile["id"],
+            defaults = {
+                "discord_name":          profile["username"],
+                "discord_discriminator": profile["discriminator"],
+                }
+            )
+    auth_login(request, user)
+    return HttpResponse("<p>%s</p>"%(user.discord_name))
 
 #I have no idea if I need this function or not. The Authlib documentation is awful.
 @receiver(token_update)

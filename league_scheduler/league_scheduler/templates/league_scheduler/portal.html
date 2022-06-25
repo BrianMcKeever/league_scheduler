@@ -2,24 +2,28 @@
 {% block body %}
 <h1>Free Legacy X-Wing League</h1>
 <div class="container">
-  <div class="row">
-    <div class="col">
-	    <p>
-		    The Free Legacy X-Wing League is a weekly league that plays
-		    the X-Wing
-		    Miniatures Game with Fantasy Flight Game's <a
-		    href="https://infinitearenas.com/legacy/docs/01_swzrulesreference_v132.pdf">last rules (2.0).</a>
-		    We use points from <a href="https://xwing-legacy.com/">https://xwing-legacy.com/</a>
-		    which have been updated to have points for new releases and further balanced by the X-Wing 2.0 community.
-	    </p> 
-    </div>
-    <div class="col">
-    	    {% if user.is_authenticated %}Hello, {{ user.username }}.{% endif %}
-	<div class="btn-group">
-		<a href="{% url 'login' %}" class="btn btn-primary">Register</a>
-		<a href="{% url 'login' %}" class="btn btn-primary">Sign In</a>
+	<div class="row">
+		<div class="col">
+			<p>
+			The Free Legacy X-Wing League is a weekly league that plays
+			the X-Wing
+			Miniatures Game with Fantasy Flight Game's <a
+									   href="https://infinitearenas.com/legacy/docs/01_swzrulesreference_v132.pdf">last rules (2.0).</a>
+			We use points from <a href="https://xwing-legacy.com/">https://xwing-legacy.com/</a>
+			which have been updated to have points for new releases and further balanced by the X-Wing 2.0 community.
+			</p> 
+		</div>
+		<div class="col">
+			{% if user.is_authenticated %}
+			Hello, {{ user.discord_name }}.
+			<a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+			{% else %}
+			<div class="btn-group">
+				<a href="{% url 'login' %}" class="btn btn-primary">Register</a>
+				<a href="{% url 'login' %}" class="btn btn-primary">Sign In</a>
+			</div>
+			{% endif %}
+		</div>
 	</div>
-    </div>
-  </div>
 </div>
 {% endblock %}
