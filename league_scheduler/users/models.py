@@ -59,7 +59,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
 
     USERNAME_FIELD = "discord_id"
-    REQUIRED_FIELDS = [discord_id, discord_discriminator, discord_name]
+    REQUIRED_FIELDS = ["discord_discriminator", "discord_name"]
 
     class Meta:
         verbose_name = "MyUser"
